@@ -3,16 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vercel Git Flow Check</title>
+    <title>今日小运气</title>
     <style>
       :root {
-        --bg: #f4f1e8;
-        --ink: #161b22;
-        --muted: #5d6773;
-        --line: #d9d1c2;
-        --blue: #265dff;
-        --green: #138a62;
-        --panel: #fffdf8;
+        --bg: #f6f3ea;
+        --ink: #17202a;
+        --muted: #667085;
+        --line: #ded7c7;
+        --panel: rgba(255, 253, 247, 0.92);
+        --blue: #2458ff;
+        --green: #16855f;
+        --rose: #d9486e;
+        --gold: #c98314;
       }
 
       * {
@@ -25,42 +27,86 @@
         color: var(--ink);
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         background:
-          linear-gradient(120deg, rgba(38, 93, 255, 0.14), transparent 35%),
-          linear-gradient(240deg, rgba(19, 138, 98, 0.14), transparent 32%),
+          radial-gradient(circle at 12% 14%, rgba(36, 88, 255, 0.16), transparent 28%),
+          radial-gradient(circle at 88% 18%, rgba(217, 72, 110, 0.14), transparent 26%),
+          radial-gradient(circle at 64% 94%, rgba(22, 133, 95, 0.16), transparent 30%),
           var(--bg);
+        overflow-x: hidden;
+      }
+
+      .floaters {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .bubble {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        opacity: 0.42;
+        animation: drift 9s ease-in-out infinite;
+      }
+
+      .bubble:nth-child(1) { left: 9%; top: 20%; background: var(--blue); animation-delay: -1s; }
+      .bubble:nth-child(2) { left: 78%; top: 12%; background: var(--rose); animation-delay: -3s; }
+      .bubble:nth-child(3) { left: 84%; top: 76%; background: var(--green); animation-delay: -5s; }
+      .bubble:nth-child(4) { left: 18%; top: 82%; background: var(--gold); animation-delay: -7s; }
+
+      @keyframes drift {
+        0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(14px, -22px, 0) scale(1.45); }
       }
 
       main {
+        position: relative;
         min-height: 100vh;
         display: grid;
         place-items: center;
-        padding: 32px 20px;
+        padding: 34px 20px;
       }
 
-      .shell {
-        width: min(980px, 100%);
+      .app {
+        width: min(1050px, 100%);
         display: grid;
-        grid-template-columns: 1fr 0.76fr;
+        grid-template-columns: 1.04fr 0.96fr;
         border: 1px solid var(--line);
         border-radius: 8px;
         overflow: hidden;
-        background: rgba(255, 253, 248, 0.88);
-        box-shadow: 0 22px 70px rgba(22, 27, 34, 0.12);
+        background: var(--panel);
+        box-shadow: 0 24px 70px rgba(23, 32, 42, 0.14);
+        backdrop-filter: blur(18px);
       }
 
-      .intro {
-        padding: 58px;
+      .hero,
+      .side {
+        padding: 46px;
+      }
+
+      .hero {
+        display: grid;
+        align-content: space-between;
+        min-height: 650px;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        color: var(--green);
+        font-size: 14px;
+        font-weight: 800;
       }
 
       h1 {
         margin: 0;
-        max-width: 660px;
-        font-size: clamp(42px, 7vw, 82px);
+        max-width: 610px;
+        font-size: clamp(44px, 7vw, 86px);
         line-height: 0.96;
         letter-spacing: 0;
       }
 
-      p {
+      .lead {
         margin: 22px 0 0;
         max-width: 560px;
         color: var(--muted);
@@ -68,130 +114,331 @@
         line-height: 1.72;
       }
 
+      .luck-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .card {
+        min-height: 132px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+        background: white;
+      }
+
+      .card span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .card strong {
+        display: block;
+        margin-top: 14px;
+        font-size: 24px;
+        line-height: 1.15;
+      }
+
+      .swatch {
+        width: 46px;
+        height: 46px;
+        margin-top: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 999px;
+        background: var(--blue);
+      }
+
       .links {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-        margin-top: 30px;
+        margin-top: 32px;
+      }
+
+      a,
+      button {
+        min-height: 46px;
+        border: 1px solid var(--blue);
+        border-radius: 8px;
+        padding: 0 18px;
+        font: inherit;
+        font-size: 15px;
+        font-weight: 800;
       }
 
       a {
         display: inline-flex;
         align-items: center;
-        min-height: 44px;
-        border: 1px solid var(--blue);
-        border-radius: 8px;
-        padding: 0 18px;
         color: var(--blue);
         text-decoration: none;
-        font-size: 15px;
-        font-weight: 700;
+        background: transparent;
       }
 
-      a.primary {
+      button {
+        cursor: pointer;
         color: white;
         background: var(--blue);
+        box-shadow: 0 12px 24px rgba(36, 88, 255, 0.22);
       }
 
-      .proof {
+      button:active {
+        transform: translateY(1px);
+      }
+
+      .side {
         display: grid;
         gap: 16px;
         align-content: center;
         border-left: 1px solid var(--line);
-        padding: 42px;
-        background: var(--panel);
+        background: rgba(255, 255, 255, 0.58);
       }
 
-      .tile {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 20px;
-        background: white;
-      }
-
-      .tile b {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 15px;
-      }
-
-      .tile span {
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.55;
-      }
-
-      .signal {
+      .wheel {
         display: grid;
         place-items: center;
-        min-height: 180px;
+        min-height: 300px;
         border-radius: 8px;
         background: #101820;
         color: white;
         text-align: center;
+        overflow: hidden;
+        position: relative;
       }
 
-      .signal strong {
-        display: block;
-        font-size: 62px;
-        line-height: 1;
+      .wheel::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border: 22px solid rgba(255, 255, 255, 0.09);
+        border-top-color: rgba(94, 234, 212, 0.72);
+        border-right-color: rgba(255, 199, 89, 0.72);
+        border-radius: 999px;
+        animation: spin 12s linear infinite;
       }
 
-      .signal span {
+      .wheel.is-spinning::before {
+        animation-duration: 0.7s;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .wheel-content {
+        position: relative;
+        z-index: 1;
+        width: min(320px, 88%);
+      }
+
+      .wheel-content span {
         display: block;
-        margin-top: 8px;
         color: #b7d9ff;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .task {
+        min-height: 86px;
+        display: grid;
+        place-items: center;
+        margin: 16px 0 18px;
+        font-size: clamp(30px, 5vw, 50px);
+        font-weight: 900;
+        line-height: 1.05;
+      }
+
+      .note {
+        margin: 0;
+        color: #d9e7ff;
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .history {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .history li {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        background: white;
+        color: var(--muted);
         font-size: 14px;
       }
 
-      @media (max-width: 780px) {
-        .shell {
+      .history b {
+        color: var(--ink);
+      }
+
+      @media (max-width: 860px) {
+        .app {
           grid-template-columns: 1fr;
         }
 
-        .intro,
-        .proof {
+        .hero {
+          min-height: auto;
+        }
+
+        .hero,
+        .side {
           padding: 30px 24px;
         }
 
-        .proof {
-          border-top: 1px solid var(--line);
+        .side {
           border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+
+        .luck-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
+    <div class="floaters" aria-hidden="true">
+      <span class="bubble"></span>
+      <span class="bubble"></span>
+      <span class="bubble"></span>
+      <span class="bubble"></span>
+    </div>
     <main>
-      <section class="shell" aria-label="Vercel Git integration check">
-        <div class="intro">
-          <h1>第三次自动上线测试</h1>
-          <p>
-            这个页面用来再次验证固定流程：先提交到 GitHub，再由 Vercel 自动发布。
-            本次活跃时间：2026-07-02 21:00，Asia/Shanghai。
-          </p>
+      <section class="app" aria-label="今日小运气">
+        <div class="hero">
+          <div>
+            <p class="eyebrow" id="todayLabel">今天的小提示</p>
+            <h1>今日小运气</h1>
+            <p class="lead" id="dailyLine">加载今天适合做的一件小事。</p>
+            <div class="luck-grid">
+              <article class="card">
+                <span>幸运色</span>
+                <div class="swatch" id="colorSwatch"></div>
+                <strong id="luckyColor">海盐蓝</strong>
+              </article>
+              <article class="card">
+                <span>幸运数字</span>
+                <strong id="luckyNumber">7</strong>
+              </article>
+              <article class="card">
+                <span>适合做</span>
+                <strong id="goodThing">散步十分钟</strong>
+              </article>
+            </div>
+          </div>
           <div class="links">
-            <a class="primary" href="https://github.com/a3weshgpmondqbry/ssncwb">查看仓库</a>
+            <button id="drawButton" type="button">抽一个生活提醒</button>
+            <a href="https://github.com/a3weshgpmondqbry/ssncwb">查看 GitHub</a>
             <a href="https://vercel.com/max2014">查看 Vercel</a>
           </div>
         </div>
-        <div class="proof">
-          <div class="signal">
-            <div>
-              <strong>03</strong>
-              <span>GitHub to Vercel</span>
+        <div class="side">
+          <div class="wheel" id="wheel">
+            <div class="wheel-content">
+              <span>现在适合</span>
+              <div class="task" id="taskText">喝一杯水</div>
+              <p class="note" id="taskNote">给自己 30 秒，不用急着继续。</p>
             </div>
           </div>
-          <div class="tile">
-            <b>GitHub</b>
-            <span>页面内容写入仓库，形成真实提交记录。</span>
-          </div>
-          <div class="tile">
-            <b>Vercel</b>
-            <span>仓库绑定后，每次 main 分支更新都会自动发布。</span>
-          </div>
+          <ul class="history" id="history" aria-label="最近抽到的提醒"></ul>
         </div>
       </section>
     </main>
+    <script>
+      const colors = [
+        ["海盐蓝", "#6aa6ff"],
+        ["薄荷绿", "#5fd0a5"],
+        ["番茄红", "#f06a6a"],
+        ["蜂蜜黄", "#f2b84b"],
+        ["葡萄紫", "#8b6ee8"],
+        ["乌龙茶", "#9a7357"],
+        ["清晨灰", "#9aa4b2"]
+      ];
+
+      const goodThings = [
+        "清理桌面一角",
+        "散步十分钟",
+        "早点结束一件小事",
+        "给朋友发个消息",
+        "把待办删掉一项",
+        "听一首喜欢的歌",
+        "认真吃一顿饭"
+      ];
+
+      const dailyLines = [
+        "今天适合把事情变简单一点。",
+        "今天适合先完成一件很小的事。",
+        "今天适合慢慢来，但别停太久。",
+        "今天适合把注意力留给真正重要的东西。",
+        "今天适合少纠结，多试一下。",
+        "今天适合给自己一点余地。",
+        "今天适合从舒服的节奏开始。"
+      ];
+
+      const tasks = [
+        ["喝一杯水", "身体可能比你更早发现你需要停一下。"],
+        ["站起来伸展", "肩膀、脖子和手腕都值得休息 30 秒。"],
+        ["看远处", "离开屏幕，看看窗外或者房间另一头。"],
+        ["深呼吸三次", "不用做得很标准，慢一点就行。"],
+        ["整理一件小物", "只整理一个东西，不扩大范围。"],
+        ["放一首歌", "挑一首不会让你分心太久的歌。"],
+        ["走 20 步", "不用出门，在房间里走走也算。"]
+      ];
+
+      const history = [];
+      const dateKey = new Date().toLocaleDateString("zh-CN", { timeZone: "Asia/Shanghai" });
+      const seed = dateKey.split(/[/-]/).reduce((sum, part) => sum + Number(part), 0);
+      const pick = (list, offset = 0) => list[(seed + offset) % list.length];
+
+      const dailyColor = pick(colors, 1);
+      document.getElementById("todayLabel").textContent = dateKey + " 的小提示";
+      document.getElementById("dailyLine").textContent = pick(dailyLines, 3);
+      document.getElementById("luckyColor").textContent = dailyColor[0];
+      document.getElementById("colorSwatch").style.background = dailyColor[1];
+      document.getElementById("luckyNumber").textContent = String((seed % 9) + 1);
+      document.getElementById("goodThing").textContent = pick(goodThings, 5);
+
+      const wheel = document.getElementById("wheel");
+      const taskText = document.getElementById("taskText");
+      const taskNote = document.getElementById("taskNote");
+      const historyList = document.getElementById("history");
+      let drawCount = 0;
+
+      function renderHistory() {
+        historyList.innerHTML = history.map((item) => `<li><b>${item.name}</b><span>${item.time}</span></li>`).join("");
+      }
+
+      function drawTask() {
+        drawCount += 1;
+        wheel.classList.add("is-spinning");
+        window.setTimeout(() => {
+          const task = tasks[(seed + drawCount * 3) % tasks.length];
+          taskText.textContent = task[0];
+          taskNote.textContent = task[1];
+          history.unshift({
+            name: task[0],
+            time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" })
+          });
+          history.splice(3);
+          renderHistory();
+          wheel.classList.remove("is-spinning");
+        }, 360);
+      }
+
+      document.getElementById("drawButton").addEventListener("click", drawTask);
+      drawTask();
+    </script>
   </body>
 </html>
