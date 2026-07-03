@@ -3,43 +3,664 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f2e8" />
     <title>今日小运气</title>
     <style>
-      :root { --bg:#f5f0e6; --ink:#151922; --muted:#667085; --line:rgba(36,42,54,.14); --panel:rgba(255,253,247,.86); --panel-strong:rgba(255,255,255,.94); --blue:#2d62ff; --green:#158467; --rose:#d84b72; --gold:#d49421; --shadow:rgba(19,24,33,.16); }
-      * { box-sizing:border-box; } html { scroll-behavior:smooth; }
-      body { margin:0; min-height:100vh; color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); overflow-x:hidden; }
-      body[data-mood="soft"]{--blue:#3271e8;--green:#11806d;--rose:#9d8ad7;--gold:#c79a3d;--bg:#f2f4ee;} body[data-mood="bright"]{--blue:#eb5b2b;--green:#1a985f;--rose:#d6316c;--gold:#efaa1f;--bg:#fff1df;} body[data-mood="deep"]{--blue:#3552c7;--green:#12655f;--rose:#6f7894;--gold:#b88d24;--bg:#eceef5;} body[data-mood="night"]{--blue:#7aa7ff;--green:#5dd6b4;--rose:#ff7aa5;--gold:#ffd36e;--bg:#111722;--ink:#f7f9ff;--muted:#aeb8ca;--line:rgba(255,255,255,.14);--panel:rgba(24,31,45,.82);--panel-strong:rgba(27,35,51,.94);--shadow:rgba(0,0,0,.32);}
-      .sky{position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 12% 18%,color-mix(in srgb,var(--blue) 22%,transparent),transparent 30%),radial-gradient(circle at 88% 14%,color-mix(in srgb,var(--rose) 20%,transparent),transparent 28%),radial-gradient(circle at 68% 90%,color-mix(in srgb,var(--green) 22%,transparent),transparent 34%),linear-gradient(135deg,var(--bg),color-mix(in srgb,var(--bg) 80%,white));}.sky:before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent,color-mix(in srgb,var(--blue) 18%,transparent),transparent,color-mix(in srgb,var(--rose) 16%,transparent),transparent);animation:aurora 24s linear infinite;opacity:.72}@keyframes aurora{to{transform:rotate(360deg)}}
-      .particles{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}.dot{position:absolute;width:10px;height:10px;border-radius:999px;opacity:.46;animation:drift 10s ease-in-out infinite}.dot:nth-child(1){left:8%;top:18%;background:var(--blue);animation-delay:-1s}.dot:nth-child(2){left:82%;top:12%;background:var(--rose);animation-delay:-3s}.dot:nth-child(3){left:88%;top:74%;background:var(--green);animation-delay:-5s}.dot:nth-child(4){left:16%;top:82%;background:var(--gold);animation-delay:-7s}.dot:nth-child(5){left:48%;top:8%;background:var(--green);animation-delay:-9s}@keyframes drift{50%{transform:translate3d(18px,-26px,0) scale(1.6)}}
-      main{min-height:100vh;padding:28px 20px 42px}.app{width:min(1220px,100%);margin:0 auto;display:grid;gap:18px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--panel);backdrop-filter:blur(18px);box-shadow:0 18px 44px var(--shadow)}.brand{display:flex;align-items:center;gap:10px;font-weight:900}.mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--rose));box-shadow:0 8px 24px color-mix(in srgb,var(--blue) 24%,transparent)}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a{min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:8px;color:var(--ink);background:var(--panel-strong);text-decoration:none;display:inline-flex;align-items:center;font-size:13px;font-weight:800}
-      .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}.glass,.module{border:1px solid var(--line);border-radius:8px;background:var(--panel);backdrop-filter:blur(18px);box-shadow:0 22px 60px var(--shadow);overflow:hidden}.intro{min-height:620px;padding:44px;display:grid;align-content:space-between}.eyebrow{margin:0 0 18px;color:var(--green);font-size:14px;font-weight:900}h1{margin:0;max-width:720px;font-size:clamp(48px,8vw,96px);line-height:.92;letter-spacing:0}.lead{margin:24px 0 0;max-width:620px;color:var(--muted);font-size:18px;line-height:1.72}.moods{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px}button,a.button{min-height:46px;border:1px solid var(--blue);border-radius:8px;padding:0 16px;font:inherit;font-size:14px;font-weight:900;cursor:pointer;color:white;background:var(--blue)}button:active{transform:translateY(1px)}.mood{color:var(--ink);background:var(--panel-strong);border-color:var(--line);box-shadow:none}.mood.is-active{color:white;background:var(--blue);border-color:var(--blue)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}.stat{min-height:112px;border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--panel-strong)}.stat span{display:block;color:var(--muted);font-size:12px;font-weight:900}.stat b{display:block;margin-top:12px;font-size:28px;line-height:1.08}.swatch{width:42px;height:42px;margin-top:12px;border-radius:999px;border:1px solid var(--line);background:var(--blue)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}.ghost{color:var(--blue);background:transparent;box-shadow:none}
-      .orbit{min-height:620px;padding:32px;display:grid;align-content:center;gap:16px;background:linear-gradient(160deg,#101820,#172034 58%,#0f151f);color:white;position:relative;overflow:hidden}.orbit:before{content:"";position:absolute;width:420px;height:420px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:999px;border:34px solid rgba(255,255,255,.07);border-top-color:color-mix(in srgb,var(--blue) 72%,white);border-right-color:color-mix(in srgb,var(--gold) 78%,white);animation:spin 14s linear infinite}.orbit.is-spinning:before{animation-duration:.8s}@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}.taskbox{position:relative;z-index:1;text-align:center;width:min(420px,100%);margin:auto}.taskbox span{color:#b7d9ff;font-size:14px;font-weight:900}.task{min-height:108px;display:grid;place-items:center;margin:16px 0;font-size:clamp(36px,6vw,64px);font-weight:950;line-height:1.02}.note{margin:0;color:#dbe8ff;font-size:15px;line-height:1.65}
-      .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}.module{padding:22px;min-height:260px}.module.wide{grid-column:span 2}.module h2{margin:0 0 14px;font-size:22px;letter-spacing:0}.module p{color:var(--muted);line-height:1.62;margin:0}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.flip{min-height:160px;perspective:900px;border:0;padding:0;color:inherit;background:transparent}.flip-inner{position:relative;width:100%;height:160px;transition:transform .52s ease;transform-style:preserve-3d}.flip.is-open .flip-inner{transform:rotateY(180deg)}.face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;padding:18px;background:var(--panel-strong);text-align:center}.back{transform:rotateY(180deg);background:linear-gradient(135deg,color-mix(in srgb,var(--blue) 14%,var(--panel-strong)),var(--panel-strong))}.face b{font-size:18px}.breath{display:grid;place-items:center;min-height:210px}.breath-circle{width:150px;height:150px;border-radius:999px;display:grid;place-items:center;color:white;font-weight:950;background:radial-gradient(circle,var(--blue),var(--green));box-shadow:0 20px 50px color-mix(in srgb,var(--blue) 28%,transparent);animation:breathe 7s ease-in-out infinite}@keyframes breathe{0%,100%{transform:scale(.84)}50%{transform:scale(1.08)}}
-      .timer{display:grid;gap:12px}.time{font-size:52px;font-weight:950;line-height:1}.bar{height:12px;border-radius:999px;border:1px solid var(--line);overflow:hidden;background:color-mix(in srgb,var(--muted) 12%,transparent)}.bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .2s linear}.rituals{display:grid;gap:10px;margin-top:14px}.ritual{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--panel-strong)}.ritual button{min-height:34px;padding:0 12px;font-size:12px}.ritual.done{opacity:.72}.history{display:grid;gap:10px;padding:0;margin:14px 0 0;list-style:none}.history li{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--panel-strong);color:var(--muted);font-size:14px}.history b{color:var(--ink)}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:14px}.day{aspect-ratio:1;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;background:var(--panel-strong);color:var(--muted);font-size:12px;font-weight:900}.day.on{color:white;background:var(--green);border-color:var(--green)}.day.today{outline:2px solid var(--blue)}.toast{position:fixed;left:50%;bottom:22px;z-index:10;transform:translateX(-50%) translateY(24px);opacity:0;border:1px solid var(--line);border-radius:8px;padding:12px 16px;background:var(--panel-strong);color:var(--ink);box-shadow:0 18px 48px var(--shadow);font-weight:900;transition:220ms ease;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}canvas{position:fixed;inset:0;pointer-events:none;z-index:9}
-      @media(max-width:980px){.hero,.grid{grid-template-columns:1fr}.module.wide{grid-column:span 1}.intro,.orbit{min-height:auto}.stats,.moods,.cards{grid-template-columns:1fr 1fr}}@media(max-width:620px){main{padding:14px}.topbar{align-items:flex-start;flex-direction:column}.intro,.orbit,.module{padding:22px}.stats,.moods,.cards{grid-template-columns:1fr}h1{font-size:52px}.time{font-size:44px}}
+      :root {
+        --bg: #f7f2e8;
+        --ink: #151922;
+        --muted: #626a78;
+        --panel: rgba(255, 253, 247, 0.88);
+        --panel-strong: rgba(255, 255, 255, 0.96);
+        --line: rgba(29, 35, 45, 0.14);
+        --blue: #2867d8;
+        --green: #14866f;
+        --rose: #d74e73;
+        --gold: #c88a1d;
+        --violet: #6c5edb;
+        --shadow: rgba(25, 30, 39, 0.16);
+        --soft-shadow: rgba(25, 30, 39, 0.08);
+      }
+
+      body[data-mood="soft"] {
+        --bg: #f7f2e8;
+        --blue: #2867d8;
+        --green: #14866f;
+        --rose: #d74e73;
+        --gold: #c88a1d;
+        --violet: #7562d8;
+      }
+
+      body[data-mood="bright"] {
+        --bg: #fff1df;
+        --blue: #ec632e;
+        --green: #16975d;
+        --rose: #d62d63;
+        --gold: #e5a51f;
+        --violet: #7656c9;
+      }
+
+      body[data-mood="deep"] {
+        --bg: #eef1f7;
+        --blue: #3155c6;
+        --green: #126a65;
+        --rose: #6e7898;
+        --gold: #b48524;
+        --violet: #574fb8;
+      }
+
+      body[data-mood="night"] {
+        --bg: #111722;
+        --ink: #f7f9ff;
+        --muted: #aeb8c9;
+        --panel: rgba(24, 31, 45, 0.86);
+        --panel-strong: rgba(29, 37, 52, 0.96);
+        --line: rgba(255, 255, 255, 0.14);
+        --blue: #80aaff;
+        --green: #5dd6b4;
+        --rose: #ff7aa5;
+        --gold: #ffd36e;
+        --violet: #a69bff;
+        --shadow: rgba(0, 0, 0, 0.34);
+        --soft-shadow: rgba(0, 0, 0, 0.18);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        overflow-x: hidden;
+      }
+
+      button, input, textarea { font: inherit; }
+      button { -webkit-tap-highlight-color: transparent; }
+      a { color: inherit; }
+
+      .scene {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 16% 12%, color-mix(in srgb, var(--blue) 20%, transparent), transparent 30%),
+          radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--rose) 18%, transparent), transparent 28%),
+          radial-gradient(circle at 76% 92%, color-mix(in srgb, var(--green) 20%, transparent), transparent 34%),
+          linear-gradient(135deg, var(--bg), color-mix(in srgb, var(--bg) 72%, white));
+      }
+
+      .scene::before {
+        content: "";
+        position: absolute;
+        inset: -45%;
+        background: conic-gradient(from 90deg, transparent, color-mix(in srgb, var(--blue) 18%, transparent), transparent, color-mix(in srgb, var(--gold) 18%, transparent), transparent, color-mix(in srgb, var(--rose) 14%, transparent), transparent);
+        animation: slow-turn 30s linear infinite;
+        opacity: 0.72;
+      }
+
+      .grain {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.16;
+        background-image: linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(to bottom, black, transparent 76%);
+      }
+
+      @keyframes slow-turn { to { transform: rotate(360deg); } }
+      @keyframes float-up { 50% { transform: translate3d(0, -10px, 0); } }
+      @keyframes breathe { 0%, 100% { transform: scale(.82); } 50% { transform: scale(1.1); } }
+      @keyframes sweep { to { transform: rotate(360deg); } }
+      @keyframes pop { 0% { transform: scale(.96); } 60% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+      main { min-height: 100vh; padding: 24px 18px 42px; }
+      .app { width: min(1260px, 100%); margin: 0 auto; display: grid; gap: 16px; }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 16px 44px var(--soft-shadow);
+      }
+
+      .brand { display: flex; align-items: center; gap: 10px; min-width: 180px; font-weight: 950; }
+      .mark {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--blue), var(--rose) 48%, var(--gold));
+        box-shadow: 0 10px 24px color-mix(in srgb, var(--blue) 22%, transparent);
+        animation: float-up 5s ease-in-out infinite;
+      }
+
+      .nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+      .nav a, .small-pill {
+        min-height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 11px;
+        background: var(--panel-strong);
+        color: var(--ink);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr); gap: 16px; align-items: stretch; }
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 22px 60px var(--shadow);
+        overflow: hidden;
+      }
+
+      .tool-face { min-height: 620px; padding: 34px; display: grid; align-content: space-between; gap: 26px; }
+      .date-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+      .eyebrow { margin: 0; color: var(--green); font-size: 14px; font-weight: 950; }
+      .streak { color: var(--blue); background: color-mix(in srgb, var(--blue) 10%, var(--panel-strong)); }
+      h1 { margin: 0; max-width: 740px; font-size: clamp(44px, 7vw, 86px); line-height: .96; letter-spacing: 0; }
+      .lead { margin: 18px 0 0; max-width: 670px; color: var(--muted); font-size: 17px; line-height: 1.72; }
+
+      .moods, .quick-actions, .preset-row { display: flex; flex-wrap: wrap; gap: 8px; }
+      button, .button-link {
+        min-height: 44px;
+        border: 1px solid var(--blue);
+        border-radius: 8px;
+        padding: 0 14px;
+        color: white;
+        background: var(--blue);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 900;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: transform 150ms ease, background 150ms ease, border-color 150ms ease, opacity 150ms ease;
+      }
+
+      button:hover, .button-link:hover { transform: translateY(-1px); }
+      button:active { transform: translateY(1px); }
+      button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid color-mix(in srgb, var(--gold) 70%, white); outline-offset: 2px; }
+      .secondary { color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, transparent); box-shadow: none; }
+      .plain { color: var(--ink); border-color: var(--line); background: var(--panel-strong); box-shadow: none; }
+      .danger { color: var(--rose); border-color: color-mix(in srgb, var(--rose) 38%, var(--line)); background: color-mix(in srgb, var(--rose) 8%, transparent); }
+      .mood.is-active, .preset.is-active { color: white; border-color: var(--blue); background: var(--blue); }
+
+      .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
+      .stat {
+        min-height: 112px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: var(--panel-strong);
+        box-shadow: 0 12px 28px var(--soft-shadow);
+      }
+      .stat span { display: block; color: var(--muted); font-size: 12px; font-weight: 900; }
+      .stat b { display: block; margin-top: 10px; font-size: 25px; line-height: 1.08; }
+      .swatch { width: 38px; height: 38px; border-radius: 999px; margin-top: 10px; border: 1px solid var(--line); background: var(--blue); }
+
+      .luck-stage {
+        min-height: 620px;
+        position: relative;
+        color: white;
+        background: linear-gradient(145deg, #111820, #1a2234 56%, #111722);
+        display: grid;
+        place-items: center;
+        padding: 28px;
+      }
+      .luck-stage::before {
+        content: "";
+        position: absolute;
+        width: min(480px, 82vw);
+        height: min(480px, 82vw);
+        border-radius: 50%;
+        border: 32px solid rgba(255,255,255,.07);
+        border-top-color: color-mix(in srgb, var(--blue) 72%, white);
+        border-right-color: color-mix(in srgb, var(--gold) 76%, white);
+        border-bottom-color: color-mix(in srgb, var(--green) 70%, white);
+        animation: sweep 16s linear infinite;
+      }
+      .luck-stage.fast::before { animation-duration: .9s; }
+      .taskbox { position: relative; z-index: 1; width: min(460px, 100%); text-align: center; }
+      .taskbox .label { color: #b9d7ff; font-size: 14px; font-weight: 950; }
+      .task { min-height: 112px; display: grid; place-items: center; margin: 14px 0; font-size: clamp(36px, 5.8vw, 62px); font-weight: 950; line-height: 1.02; letter-spacing: 0; }
+      .note { margin: 0; color: #dce8f9; font-size: 15px; line-height: 1.7; }
+      .fortune-strip { position: relative; z-index: 1; width: min(460px, 100%); margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .mini { border: 1px solid rgba(255,255,255,.14); border-radius: 8px; padding: 10px; background: rgba(255,255,255,.08); text-align: left; }
+      .mini span { display: block; color: #b9d7ff; font-size: 11px; font-weight: 900; }
+      .mini b { display: block; margin-top: 5px; font-size: 16px; }
+
+      .grid { display: grid; grid-template-columns: 1.15fr .85fr 1fr; gap: 16px; align-items: start; }
+      .module { min-height: 260px; padding: 22px; }
+      .module.wide { grid-column: span 2; }
+      .module.tall { min-height: 390px; }
+      .module h2 { margin: 0 0 10px; font-size: 22px; line-height: 1.16; letter-spacing: 0; }
+      .module p { margin: 0; color: var(--muted); line-height: 1.62; }
+      .section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+
+      .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+      .flip { min-height: 168px; border: 0; padding: 0; color: inherit; background: transparent; perspective: 900px; display: block; }
+      .flip:hover { transform: translateY(-2px); }
+      .flip-inner { position: relative; width: 100%; height: 168px; transition: transform .54s ease; transform-style: preserve-3d; }
+      .flip.is-open .flip-inner { transform: rotateY(180deg); }
+      .face { position: absolute; inset: 0; backface-visibility: hidden; border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; align-content: space-between; background: var(--panel-strong); box-shadow: 0 12px 28px var(--soft-shadow); text-align: left; }
+      .face.back { transform: rotateY(180deg); background: linear-gradient(135deg, color-mix(in srgb, var(--blue) 12%, var(--panel-strong)), var(--panel-strong)); }
+      .face span { color: var(--muted); font-size: 12px; font-weight: 900; }
+      .face b { font-size: 19px; line-height: 1.25; }
+
+      .radar-wrap { display: grid; grid-template-columns: 190px 1fr; gap: 18px; align-items: center; margin-top: 10px; }
+      .radar { width: 190px; height: 190px; position: relative; border-radius: 50%; background: conic-gradient(var(--blue) calc(var(--score) * 1%), color-mix(in srgb, var(--muted) 13%, transparent) 0); display: grid; place-items: center; box-shadow: inset 0 0 0 14px color-mix(in srgb, var(--panel-strong) 84%, transparent); }
+      .radar::after { content: ""; position: absolute; inset: 24px; border-radius: 50%; background: var(--panel-strong); border: 1px solid var(--line); }
+      .radar b { position: relative; z-index: 1; font-size: 42px; }
+      .meter-list { display: grid; gap: 10px; }
+      .meter { display: grid; grid-template-columns: 72px 1fr 36px; gap: 10px; align-items: center; color: var(--muted); font-size: 13px; font-weight: 850; }
+      .meter-line { height: 9px; border-radius: 999px; background: color-mix(in srgb, var(--muted) 14%, transparent); overflow: hidden; }
+      .meter-line i { display: block; height: 100%; width: var(--w); border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--blue)); }
+
+      .breath-area { display: grid; place-items: center; min-height: 210px; }
+      .breath-circle { width: 154px; height: 154px; border-radius: 50%; display: grid; place-items: center; color: white; font-weight: 950; background: radial-gradient(circle, var(--blue), var(--green)); box-shadow: 0 18px 50px color-mix(in srgb, var(--blue) 28%, transparent); animation: breathe var(--breath-speed, 7s) ease-in-out infinite; }
+      body.paused-breath .breath-circle { animation-play-state: paused; }
+
+      .timer { display: grid; gap: 12px; margin-top: 14px; }
+      .time { font-size: 54px; line-height: 1; font-weight: 950; letter-spacing: 0; }
+      .bar { height: 12px; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--muted) 13%, transparent); }
+      .bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--green), var(--blue), var(--gold)); transition: width .2s linear; }
+
+      .rituals { display: grid; gap: 9px; margin-top: 14px; }
+      .ritual { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; background: var(--panel-strong); }
+      .ritual strong { font-size: 15px; }
+      .ritual small { display: block; margin-top: 3px; color: var(--muted); line-height: 1.45; }
+      .ritual.done { opacity: .72; }
+      .ritual.done strong { text-decoration: line-through; text-decoration-thickness: 2px; }
+      .ritual button { min-height: 34px; padding: 0 10px; font-size: 12px; }
+
+      .note-form { display: grid; gap: 9px; margin-top: 14px; }
+      textarea { width: 100%; min-height: 94px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: var(--ink); background: var(--panel-strong); line-height: 1.55; }
+      .history { display: grid; gap: 9px; padding: 0; margin: 14px 0 0; list-style: none; }
+      .history li { display: grid; grid-template-columns: 1fr auto; gap: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; background: var(--panel-strong); color: var(--muted); font-size: 13px; }
+      .history b { color: var(--ink); font-size: 14px; }
+
+      .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 14px; }
+      .day { aspect-ratio: 1; border: 1px solid var(--line); border-radius: 8px; display: grid; place-items: center; background: var(--panel-strong); color: var(--muted); font-size: 11px; font-weight: 900; }
+      .day.on { color: white; border-color: var(--green); background: var(--green); }
+      .day.today { outline: 2px solid var(--blue); outline-offset: 1px; color: var(--ink); }
+      .day.today.on { color: white; }
+
+      .toast { position: fixed; left: 50%; bottom: 22px; z-index: 20; transform: translateX(-50%) translateY(22px); opacity: 0; pointer-events: none; border: 1px solid var(--line); border-radius: 8px; padding: 12px 15px; color: var(--ink); background: var(--panel-strong); box-shadow: 0 18px 48px var(--shadow); font-weight: 900; transition: 220ms ease; }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      canvas { position: fixed; inset: 0; pointer-events: none; z-index: 19; }
+
+      .updated { animation: pop 280ms ease; }
+
+      @media (max-width: 1050px) {
+        .hero, .grid { grid-template-columns: 1fr; }
+        .module.wide { grid-column: span 1; }
+        .tool-face, .luck-stage { min-height: auto; }
+        .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 720px) {
+        main { padding: 12px 10px 28px; }
+        .topbar { align-items: flex-start; flex-direction: column; }
+        .nav { justify-content: flex-start; }
+        .tool-face, .luck-stage, .module { padding: 18px; }
+        .hero, .grid, .app { gap: 10px; }
+        h1 { font-size: 46px; }
+        .lead { font-size: 15px; }
+        .stats, .cards, .radar-wrap, .fortune-strip { grid-template-columns: 1fr; }
+        .radar-wrap { justify-items: center; }
+        .quick-actions button, .quick-actions .button-link, .moods button, .preset-row button { flex: 1 1 132px; }
+        .time { font-size: 44px; }
+        .task { font-size: 42px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      }
     </style>
   </head>
   <body data-mood="soft">
-    <div class="sky"></div><div class="particles" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><canvas id="confetti"></canvas>
-    <main><div class="app"><header class="topbar"><div class="brand"><span class="mark"></span><span>今日小运气 Pro</span></div><nav class="nav"><a href="#cards">翻牌</a><a href="#focus">专注</a><a href="#record">记录</a><a href="https://github.com/a3weshgpmondqbry/ssncwb">GitHub</a></nav></header>
-      <section class="hero"><div class="glass intro"><div><p class="eyebrow" id="todayLabel">今天的小提示</p><h1>把今天调到舒服的频率</h1><p class="lead" id="dailyLine">每天打开一次，抽一个提醒，做一个小动作，留下一个轻记录。</p><div class="moods" aria-label="心情模式"><button class="mood is-active" data-mood="soft" type="button">柔和</button><button class="mood" data-mood="bright" type="button">来劲</button><button class="mood" data-mood="deep" type="button">专注</button><button class="mood" data-mood="night" type="button">夜间</button></div><div class="stats"><div class="stat"><span>幸运色</span><div class="swatch" id="colorSwatch"></div><b id="luckyColor">海盐蓝</b></div><div class="stat"><span>幸运数字</span><b id="luckyNumber">7</b></div><div class="stat"><span>今日打卡</span><b id="checkCount">0</b></div><div class="stat"><span>当前模式</span><b id="moodLabel">柔和</b></div></div></div><div class="actions"><button id="drawButton" type="button">抽生活提醒</button><button id="checkButton" type="button">完成今日打卡</button><button class="ghost" id="copyButton" type="button">复制链接</button><button class="ghost" id="resetButton" type="button">清空今天</button></div></div><div class="glass orbit" id="orbit"><div class="taskbox"><span>现在适合</span><div class="task" id="taskText">喝一杯水</div><p class="note" id="taskNote">给自己 30 秒，不用急着继续。</p></div></div></section>
-      <section class="grid"><div class="module wide" id="cards"><h2>今日三张卡</h2><p>点开任意一张，给今天加一点随机感。</p><div class="cards"><button class="flip" type="button" data-card="0"><span class="flip-inner"><span class="face"><b>能量卡</b></span><span class="face back"><b id="card0">先伸个懒腰</b></span></span></button><button class="flip" type="button" data-card="1"><span class="flip-inner"><span class="face"><b>行动卡</b></span><span class="face back"><b id="card1">做一件小事</b></span></span></button><button class="flip" type="button" data-card="2"><span class="flip-inner"><span class="face"><b>彩蛋卡</b></span><span class="face back"><b id="card2">今天会更顺</b></span></span></button></div></div><div class="module"><h2>呼吸 7 秒</h2><p>跟着圆圈放慢一点，页面会一直轻轻动。</p><div class="breath"><div class="breath-circle">慢一点</div></div></div><div class="module" id="focus"><h2>轻专注</h2><p>一个 3 分钟短跑，适合开始前热身。</p><div class="timer"><div class="time" id="timeLeft">03:00</div><div class="bar"><i id="timerBar"></i></div><button id="timerButton" type="button">开始 3 分钟</button></div></div><div class="module"><h2>迷你仪式</h2><p>不用全做，点掉一个也算今天开始了。</p><div class="rituals" id="rituals"></div></div><div class="module" id="record"><h2>今日记录</h2><p id="recordLine">还没有记录，先抽一次提醒。</p><ul class="history" id="history"></ul></div><div class="module"><h2>本月星图</h2><p>完成打卡后，今天会点亮。</p><div class="calendar" id="calendar"></div></div></section>
-    </div></main><div class="toast" id="toast">已完成</div>
+    <div class="scene" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <canvas id="confetti" aria-hidden="true"></canvas>
+
+    <main>
+      <div class="app">
+        <header class="topbar">
+          <div class="brand"><span class="mark" aria-hidden="true"></span><span>今日小运气</span></div>
+          <nav class="nav" aria-label="页面导航">
+            <a href="#cards">翻牌</a>
+            <a href="#focus">专注</a>
+            <a href="#ritualsPanel">小任务</a>
+            <a href="#record">记录</a>
+            <a href="https://github.com/a3weshgpmondqbry/ssncwb" target="_blank" rel="noreferrer">GitHub</a>
+          </nav>
+        </header>
+
+        <section class="hero" aria-label="今日工具">
+          <div class="panel tool-face">
+            <div>
+              <div class="date-row">
+                <p class="eyebrow" id="todayLabel">今天的小提示</p>
+                <span class="small-pill streak" id="streakLabel">连续 0 天</span>
+              </div>
+              <h1 id="headline">把今天调到舒服的频率</h1>
+              <p class="lead" id="dailyLine">每天打开一次，抽一个提醒，做一个小动作，留下一个轻记录。</p>
+
+              <div class="moods" aria-label="心情模式">
+                <button class="plain mood is-active" data-mood="soft" type="button">柔和</button>
+                <button class="plain mood" data-mood="bright" type="button">来劲</button>
+                <button class="plain mood" data-mood="deep" type="button">专注</button>
+                <button class="plain mood" data-mood="night" type="button">夜间</button>
+              </div>
+
+              <div class="stats" aria-label="今日状态">
+                <div class="stat"><span>幸运色</span><div class="swatch" id="colorSwatch"></div><b id="luckyColor">海盐蓝</b></div>
+                <div class="stat"><span>幸运数字</span><b id="luckyNumber">7</b></div>
+                <div class="stat"><span>今日完成</span><b id="checkCount">0</b></div>
+                <div class="stat"><span>当前模式</span><b id="moodLabel">柔和</b></div>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+              <button id="drawButton" type="button">抽生活提醒</button>
+              <button id="checkButton" type="button">完成今日打卡</button>
+              <button class="secondary" id="favoriteButton" type="button">收藏当前好运</button>
+              <button class="plain" id="copyButton" type="button">复制链接</button>
+              <button class="danger" id="resetButton" type="button">清空今天</button>
+            </div>
+          </div>
+
+          <div class="panel luck-stage" id="luckStage">
+            <div class="taskbox">
+              <span class="label">现在适合</span>
+              <div class="task" id="taskText">喝一杯水</div>
+              <p class="note" id="taskNote">给自己 30 秒，不用急着继续。</p>
+            </div>
+            <div class="fortune-strip" aria-label="今日提示">
+              <div class="mini"><span>小运气</span><b id="fortuneMini">路会变顺</b></div>
+              <div class="mini"><span>适合做</span><b id="actionMini">先动一下</b></div>
+              <div class="mini"><span>避开</span><b id="avoidMini">反复纠结</b></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid" aria-label="小工具区">
+          <div class="panel module wide" id="cards">
+            <div class="section-head">
+              <div><h2>今日三张卡</h2><p>点开任意一张，给今天加一点随机感。</p></div>
+              <button class="plain" id="shuffleCards" type="button">换一组</button>
+            </div>
+            <div class="cards">
+              <button class="flip" type="button" data-card="0"><span class="flip-inner"><span class="face"><span>能量卡</span><b>点我翻开</b></span><span class="face back"><span>今天的能量</span><b id="card0">先伸个懒腰</b></span></span></button>
+              <button class="flip" type="button" data-card="1"><span class="flip-inner"><span class="face"><span>行动卡</span><b>点我翻开</b></span><span class="face back"><span>马上能做</span><b id="card1">做一件小事</b></span></span></button>
+              <button class="flip" type="button" data-card="2"><span class="flip-inner"><span class="face"><span>彩蛋卡</span><b>点我翻开</b></span><span class="face back"><span>给你的彩蛋</span><b id="card2">今天会更顺</b></span></span></button>
+            </div>
+          </div>
+
+          <div class="panel module tall">
+            <h2>运气雷达</h2>
+            <p>不严肃，但很适合给今天一个轻松开场。</p>
+            <div class="radar-wrap">
+              <div class="radar" id="radar" style="--score: 72"><b id="luckScore">72</b></div>
+              <div class="meter-list" id="meterList"></div>
+            </div>
+          </div>
+
+          <div class="panel module" id="focus">
+            <h2>轻专注</h2>
+            <p>适合开始前热身，也适合把自己从拖延里拉回来。</p>
+            <div class="preset-row" aria-label="专注时长">
+              <button class="plain preset is-active" data-minutes="3" type="button">3 分钟</button>
+              <button class="plain preset" data-minutes="5" type="button">5 分钟</button>
+              <button class="plain preset" data-minutes="10" type="button">10 分钟</button>
+            </div>
+            <div class="timer">
+              <div class="time" id="timeLeft">03:00</div>
+              <div class="bar"><i id="timerBar"></i></div>
+              <div class="quick-actions">
+                <button id="timerButton" type="button">开始</button>
+                <button class="plain" id="timerReset" type="button">重置</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel module">
+            <h2>呼吸放松</h2>
+            <p id="breathHint">跟着圆圈吸气、停一下、再慢慢呼出去。</p>
+            <div class="breath-area"><div class="breath-circle" id="breathCircle">慢一点</div></div>
+            <div class="quick-actions">
+              <button id="breathButton" type="button">暂停呼吸</button>
+              <button class="plain" id="breathSpeed" type="button">换节奏</button>
+            </div>
+          </div>
+
+          <div class="panel module" id="ritualsPanel">
+            <div class="section-head">
+              <div><h2>迷你仪式</h2><p>不用全做，完成一个也算今天开始了。</p></div>
+              <button class="plain" id="refreshRituals" type="button">刷新</button>
+            </div>
+            <div class="rituals" id="rituals"></div>
+          </div>
+
+          <div class="panel module" id="record">
+            <div class="section-head">
+              <div><h2>今日记录</h2><p id="recordLine">还没有记录，先抽一次提醒。</p></div>
+              <button class="plain" id="clearLog" type="button">清记录</button>
+            </div>
+            <div class="note-form">
+              <textarea id="noteInput" maxlength="80" placeholder="写一句今天想记住的小事"></textarea>
+              <button id="saveNote" type="button">存入今日记录</button>
+            </div>
+            <ul class="history" id="history"></ul>
+          </div>
+
+          <div class="panel module">
+            <h2>本月星图</h2>
+            <p>完成打卡、专注或小任务后，今天会被点亮。</p>
+            <div class="calendar" id="calendar"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="toast" id="toast">已完成</div>
+
     <script>
-      const moodNames={soft:"柔和",bright:"来劲",deep:"专注",night:"夜间"};
-      const colors=[["海盐蓝","#6aa6ff"],["薄荷绿","#5fd0a5"],["番茄红","#f06a6a"],["蜂蜜黄","#f2b84b"],["葡萄紫","#8b6ee8"],["乌龙茶","#9a7357"],["清晨灰","#9aa4b2"]];
-      const lines=["今天适合把事情变简单一点。","先完成一件小事，手感就会回来。","慢一点没关系，但别把自己放在原地。","给注意力留一块干净的地方。","别急着完美，先让它动起来。","今天的好运从一个小动作开始。"]; const cards=["先伸个懒腰","把水杯倒满","清掉一个红点","走到窗边看十秒","给自己一句好话","整理桌面一角","发出一条该发的消息","少纠结五分钟","早点收尾一件事"];
-      const taskSets={soft:[["喝一杯水","身体可能比你更早发现你需要停一下。"],["看远处","离开屏幕，看看窗外或者房间另一头。"],["深呼吸三次","不用做得很标准，慢一点就行。"]],bright:[["走 20 步","不用出门，在房间里走走也算。"],["放一首歌","挑一首不会让你分心太久的歌。"],["站起来伸展","肩膀、脖子和手腕都值得休息 30 秒。"]],deep:[["写下下一步","只写一句话，让事情更清楚。"],["关掉一个干扰","把一个暂时不用的窗口收起来。"],["整理一件小物","只整理一个东西，不扩大范围。"]],night:[["调暗屏幕","让眼睛舒服一点，别硬扛。"],["准备收尾","写下明天第一件事，今晚就别反复想了。"],["放慢呼吸","把节奏从工作切回生活。"]]};
-      const ritualsBase=["喝水","伸展","看远处","整理一角"], now=new Date(), dateKey=now.toLocaleDateString("zh-CN",{timeZone:"Asia/Shanghai"}), day=Number(new Intl.DateTimeFormat("zh-CN",{timeZone:"Asia/Shanghai",day:"numeric"}).format(now)), seed=dateKey.split(/[/-]/).reduce((s,p)=>s+Number(p),0), pick=(list,o=0)=>list[(seed+o)%list.length], storageKey="dailyLuckPro-"+dateKey, saved=JSON.parse(localStorage.getItem(storageKey)||"{}");
-      const history=Array.isArray(saved.history)?saved.history:[], doneRituals=new Set(saved.doneRituals||[]); let checks=Number(saved.checks||0), drawCount=Number(saved.drawCount||0), activeMood=saved.mood||"soft", timer=null, remaining=Number(saved.remaining||180);
-      const $=id=>document.getElementById(id), dailyColor=pick(colors,1), toast=$("toast"), orbit=$("orbit"), canvas=$("confetti"), ctx=canvas.getContext("2d"); let confetti=[];
-      function save(){localStorage.setItem(storageKey,JSON.stringify({history,checks,drawCount,mood:activeMood,doneRituals:[...doneRituals],remaining}))} function showToast(text){toast.textContent=text;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1400)} function pulseConfetti(){confetti=Array.from({length:70},()=>({x:innerWidth/2,y:innerHeight*.35,vx:(Math.random()-.5)*8,vy:Math.random()*-7-2,g:.22,s:Math.random()*5+3,c:["#2d62ff","#158467","#d84b72","#d49421"][Math.floor(Math.random()*4)],life:70}))}
-      function sizeCanvas(){canvas.width=innerWidth;canvas.height=innerHeight} addEventListener("resize",sizeCanvas); sizeCanvas(); function animateConfetti(){ctx.clearRect(0,0,canvas.width,canvas.height);confetti.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.life--;ctx.fillStyle=p.c;ctx.fillRect(p.x,p.y,p.s,p.s)});confetti=confetti.filter(p=>p.life>0);requestAnimationFrame(animateConfetti)} animateConfetti();
-      function renderCalendar(){const total=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();$("calendar").innerHTML=Array.from({length:total},(_,i)=>`<div class="day ${i+1===day?"today":""} ${checks&&i+1===day?"on":""}">${i+1}</div>`).join("")} function renderRituals(){$("rituals").innerHTML=ritualsBase.map(name=>`<div class="ritual ${doneRituals.has(name)?"done":""}"><span>${name}</span><button type="button" data-ritual="${name}">${doneRituals.has(name)?"已完成":"完成"}</button></div>`).join("");document.querySelectorAll("[data-ritual]").forEach(btn=>btn.addEventListener("click",()=>{doneRituals.add(btn.dataset.ritual);checks+=1;save();render();showToast("仪式完成")}))} function renderTimer(){const m=String(Math.floor(remaining/60)).padStart(2,"0"),s=String(remaining%60).padStart(2,"0");$("timeLeft").textContent=`${m}:${s}`;$("timerBar").style.width=`${((180-remaining)/180)*100}%`}
-      function render(){document.body.dataset.mood=activeMood;$("todayLabel").textContent=dateKey+" 的小提示";$("dailyLine").textContent=pick(lines,activeMood==="bright"?4:activeMood==="deep"?3:activeMood==="night"?2:5);$("luckyColor").textContent=dailyColor[0];$("colorSwatch").style.background=dailyColor[1];$("luckyNumber").textContent=String((seed%9)+1);$("checkCount").textContent=checks;$("moodLabel").textContent=moodNames[activeMood];document.querySelectorAll(".mood").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.mood===activeMood));$("recordLine").textContent=history.length?"最近的小动作都留在这里。":"还没有记录，先抽一次提醒。";$("history").innerHTML=history.map(item=>`<li><b>${item.name}</b><span>${item.time}</span></li>`).join("");[0,1,2].forEach(i=>$("card"+i).textContent=pick(cards,i*2+checks));renderRituals();renderCalendar();renderTimer()}
-      function drawTask(){drawCount+=1;orbit.classList.add("is-spinning");setTimeout(()=>{const list=taskSets[activeMood],task=list[(seed+drawCount*3)%list.length];$("taskText").textContent=task[0];$("taskNote").textContent=task[1];history.unshift({name:task[0],time:new Date().toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit"})});history.splice(5);orbit.classList.remove("is-spinning");save();render()},360)}
-      $("drawButton").addEventListener("click",drawTask);$("checkButton").addEventListener("click",()=>{checks+=1;save();render();pulseConfetti();showToast("今日已打卡")});$("resetButton").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null}checks=0;drawCount=0;remaining=180;history.splice(0);doneRituals.clear();$("timerButton").textContent="开始 3 分钟";save();render();showToast("今天已清空")});$("copyButton").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(location.href);showToast("链接已复制")}catch{showToast("可以复制地址栏链接")}});document.querySelectorAll(".mood").forEach(btn=>btn.addEventListener("click",()=>{activeMood=btn.dataset.mood;save();render();drawTask()}));document.querySelectorAll(".flip").forEach(card=>card.addEventListener("click",()=>{card.classList.toggle("is-open");showToast("卡片已翻开")}));$("timerButton").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;$("timerButton").textContent="继续计时";return}$("timerButton").textContent="暂停";timer=setInterval(()=>{remaining-=1;if(remaining<=0){remaining=180;clearInterval(timer);timer=null;checks+=1;pulseConfetti();showToast("3 分钟完成");$("timerButton").textContent="再来 3 分钟"}save();renderTimer();renderCalendar();$("checkCount").textContent=checks},1000)});
-      render(); if(!history.length) drawTask();
+      const moodNames = { soft: "柔和", bright: "来劲", deep: "专注", night: "夜间" };
+      const headlines = {
+        soft: "把今天调到舒服的频率",
+        bright: "给今天加一点轻快的推进力",
+        deep: "留出一块安静的注意力",
+        night: "把节奏慢慢收回生活里"
+      };
+      const colors = [["海盐蓝", "#6aa6ff"], ["薄荷绿", "#5fd0a5"], ["番茄红", "#f06a6a"], ["蜂蜜黄", "#f2b84b"], ["葡萄紫", "#8b6ee8"], ["乌龙茶", "#9a7357"], ["清晨灰", "#9aa4b2"], ["柚子橙", "#f49b50"]];
+      const dailyLines = ["今天适合把事情变简单一点。", "先完成一件小事，手感就会回来。", "慢一点没关系，但别把自己放在原地。", "给注意力留一块干净的地方。", "别急着完美，先让它动起来。", "今天的好运从一个小动作开始。", "让生活先松一口气，再继续往前。"];
+      const cardPool = ["先伸个懒腰", "把水杯倒满", "清掉一个红点", "走到窗边看十秒", "给自己一句好话", "整理桌面一角", "发出一条该发的消息", "少纠结五分钟", "早点收尾一件事", "把待办写成一句话", "把声音调低一点", "给眼睛放个短假"];
+      const fortunes = ["路会变顺", "有人会回应", "灵感会冒头", "效率会回升", "心会轻一点", "会遇到小惊喜", "适合重新开始"];
+      const avoids = ["反复纠结", "一直硬撑", "消息乱跳", "空想太久", "过度比较", "越做越满", "临时加码"];
+      const taskSets = {
+        soft: [["喝一杯水", "身体可能比你更早发现你需要停一下。"], ["看远处", "离开屏幕，看看窗外或者房间另一头。"], ["深呼吸三次", "不用做得很标准，慢一点就行。"], ["整理一角", "只整理一个小范围，让环境轻一点。"]],
+        bright: [["走 20 步", "不用出门，在房间里走走也算。"], ["放一首歌", "挑一首不会让你分心太久的歌。"], ["站起来伸展", "肩膀、脖子和手腕都值得休息 30 秒。"], ["完成一件小事", "选最容易开始的那一个。"]],
+        deep: [["写下下一步", "只写一句话，让事情更清楚。"], ["关掉一个干扰", "把一个暂时不用的窗口收起来。"], ["整理一件小物", "只整理一个东西，不扩大范围。"], ["专注三分钟", "先用短跑把状态找回来。"]],
+        night: [["调暗屏幕", "让眼睛舒服一点，别硬扛。"], ["准备收尾", "写下明天第一件事，今晚就别反复想了。"], ["放慢呼吸", "把节奏从工作切回生活。"], ["清空桌面", "留一个简单的结束动作。"]]
+      };
+      const ritualPool = [
+        ["喝水", "把杯子倒满，喝几口就算完成。"],
+        ["伸展", "肩颈、手腕、腰背任选一个。"],
+        ["看远处", "离开屏幕 20 秒。"],
+        ["整理一角", "只整理一个小范围。"],
+        ["发出消息", "把一条该发的消息发出去。"],
+        ["写下一步", "只写一句下一步。"],
+        ["关掉干扰", "收起一个暂时不用的页面。"],
+        ["站起来", "站 30 秒，换一下状态。"]
+      ];
+      const meters = ["顺手", "清醒", "松弛", "行动"];
+      const now = new Date();
+      const dateKey = now.toLocaleDateString("zh-CN", { timeZone: "Asia/Shanghai" });
+      const day = Number(new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", day: "numeric" }).format(now));
+      const seed = dateKey.split(/[/-]/).reduce((sum, part) => sum + Number(part), 0);
+      const storeKey = "daily-luck-v2-" + dateKey;
+      const state = Object.assign({ checks: 0, drawCount: 0, mood: "soft", history: [], doneRituals: [], cardShift: 0, focusMinutes: 3, remaining: 180, breathSpeedIndex: 0, favorite: "" }, JSON.parse(localStorage.getItem(storeKey) || "{}"));
+      const $ = (id) => document.getElementById(id);
+      const pick = (list, offset = 0) => list[Math.abs(seed + offset) % list.length];
+      const toast = $("toast");
+      const canvas = $("confetti");
+      const ctx = canvas.getContext("2d");
+      const breathSpeeds = [[7, "慢一点"], [5, "轻快点"], [9, "更放松"]];
+      let timer = null;
+      let confetti = [];
+
+      function save() { localStorage.setItem(storeKey, JSON.stringify(state)); }
+      function showToast(text) { toast.textContent = text; toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 1500); }
+      function bump(el) { el.classList.remove("updated"); void el.offsetWidth; el.classList.add("updated"); }
+      function addHistory(name, type = "完成") { state.history.unshift({ name, type, time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) }); state.history = state.history.slice(0, 7); }
+      function complete(name) { state.checks += 1; addHistory(name); pulseConfetti(); save(); render(); showToast(name + "已完成"); }
+
+      function sizeCanvas() { canvas.width = innerWidth; canvas.height = innerHeight; }
+      addEventListener("resize", sizeCanvas); sizeCanvas();
+      function pulseConfetti() { confetti = Array.from({ length: 72 }, () => ({ x: innerWidth / 2, y: innerHeight * .34, vx: (Math.random() - .5) * 8, vy: Math.random() * -7 - 2, g: .22, s: Math.random() * 5 + 3, c: ["#2867d8", "#14866f", "#d74e73", "#c88a1d", "#6c5edb"][Math.floor(Math.random() * 5)], life: 74 })); }
+      function animateConfetti() { ctx.clearRect(0, 0, canvas.width, canvas.height); confetti.forEach((p) => { p.x += p.vx; p.y += p.vy; p.vy += p.g; p.life -= 1; ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s); }); confetti = confetti.filter((p) => p.life > 0); requestAnimationFrame(animateConfetti); }
+      animateConfetti();
+
+      function renderCalendar() {
+        const total = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        $("calendar").innerHTML = Array.from({ length: total }, (_, i) => {
+          const n = i + 1;
+          const isToday = n === day;
+          const isOn = state.checks > 0 && isToday;
+          return `<div class="day ${isToday ? "today" : ""} ${isOn ? "on" : ""}">${n}</div>`;
+        }).join("");
+      }
+
+      function currentRituals() { return Array.from({ length: 4 }, (_, i) => ritualPool[(seed + state.drawCount + i * 2) % ritualPool.length]); }
+      function renderRituals() {
+        $("rituals").innerHTML = currentRituals().map(([name, desc]) => {
+          const done = state.doneRituals.includes(name);
+          return `<div class="ritual ${done ? "done" : ""}"><div><strong>${name}</strong><small>${desc}</small></div><button type="button" data-ritual="${name}">${done ? "已完成" : "完成"}</button></div>`;
+        }).join("");
+        document.querySelectorAll("[data-ritual]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const name = btn.dataset.ritual;
+            if (!state.doneRituals.includes(name)) state.doneRituals.push(name);
+            complete(name);
+          });
+        });
+      }
+
+      function renderCards() {
+        [0, 1, 2].forEach((i) => { $("card" + i).textContent = pick(cardPool, state.cardShift + i * 3 + state.checks); });
+      }
+
+      function renderRadar() {
+        const base = 58 + ((seed + state.checks * 7 + state.drawCount * 3) % 38);
+        $("luckScore").textContent = base;
+        $("radar").style.setProperty("--score", base);
+        $("meterList").innerHTML = meters.map((name, i) => {
+          const val = 46 + ((seed + state.checks * 9 + i * 13) % 50);
+          return `<div class="meter"><span>${name}</span><div class="meter-line"><i style="--w:${val}%"></i></div><b>${val}</b></div>`;
+        }).join("");
+      }
+
+      function renderTimer() {
+        const total = state.focusMinutes * 60;
+        state.remaining = Math.min(state.remaining, total);
+        const m = String(Math.floor(state.remaining / 60)).padStart(2, "0");
+        const s = String(state.remaining % 60).padStart(2, "0");
+        $("timeLeft").textContent = `${m}:${s}`;
+        $("timerBar").style.width = `${((total - state.remaining) / total) * 100}%`;
+        document.querySelectorAll(".preset").forEach((btn) => btn.classList.toggle("is-active", Number(btn.dataset.minutes) === state.focusMinutes));
+      }
+
+      function renderHistory() {
+        $("recordLine").textContent = state.history.length ? "今天的小动作都留在这里。" : "还没有记录，先抽一次提醒。";
+        $("history").innerHTML = state.history.map((item) => `<li><b>${item.name}</b><span>${item.type} ${item.time}</span></li>`).join("");
+      }
+
+      function render() {
+        document.body.dataset.mood = state.mood;
+        $("todayLabel").textContent = dateKey + " 的小提示";
+        $("headline").textContent = headlines[state.mood];
+        $("dailyLine").textContent = pick(dailyLines, state.mood === "bright" ? 4 : state.mood === "deep" ? 3 : state.mood === "night" ? 2 : 5);
+        const dailyColor = pick(colors, 1);
+        $("luckyColor").textContent = dailyColor[0];
+        $("colorSwatch").style.background = dailyColor[1];
+        $("luckyNumber").textContent = String((seed % 9) + 1);
+        $("checkCount").textContent = state.checks;
+        $("moodLabel").textContent = moodNames[state.mood];
+        $("streakLabel").textContent = state.checks > 0 ? "今天已点亮" : "今天待点亮";
+        $("fortuneMini").textContent = pick(fortunes, state.checks + state.drawCount);
+        $("actionMini").textContent = pick(cardPool, state.drawCount + 2);
+        $("avoidMini").textContent = pick(avoids, state.checks + 1);
+        document.querySelectorAll(".mood").forEach((btn) => btn.classList.toggle("is-active", btn.dataset.mood === state.mood));
+        document.documentElement.style.setProperty("--breath-speed", breathSpeeds[state.breathSpeedIndex][0] + "s");
+        $("breathCircle").textContent = breathSpeeds[state.breathSpeedIndex][1];
+        renderCards(); renderRadar(); renderTimer(); renderRituals(); renderHistory(); renderCalendar();
+      }
+
+      function drawTask() {
+        state.drawCount += 1;
+        $("luckStage").classList.add("fast");
+        setTimeout(() => {
+          const list = taskSets[state.mood];
+          const task = list[(seed + state.drawCount * 3) % list.length];
+          $("taskText").textContent = task[0];
+          $("taskNote").textContent = task[1];
+          addHistory(task[0], "抽到");
+          $("luckStage").classList.remove("fast");
+          save(); render(); bump($("luckStage")); showToast("抽到了新的提醒");
+        }, 360);
+      }
+
+      function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+      function resetTimer(minutes = state.focusMinutes) { stopTimer(); state.focusMinutes = minutes; state.remaining = minutes * 60; $("timerButton").textContent = "开始"; save(); renderTimer(); }
+
+      document.querySelectorAll(".mood").forEach((btn) => btn.addEventListener("click", () => { state.mood = btn.dataset.mood; save(); render(); drawTask(); showToast("已切换到" + moodNames[state.mood]); }));
+      $("drawButton").addEventListener("click", drawTask);
+      $("checkButton").addEventListener("click", () => complete("今日打卡"));
+      $("favoriteButton").addEventListener("click", () => { state.favorite = $("taskText").textContent; addHistory("收藏：" + state.favorite, "记录"); save(); renderHistory(); showToast("已收藏当前好运"); });
+      $("copyButton").addEventListener("click", async () => { try { await navigator.clipboard.writeText(location.href); showToast("链接已复制"); } catch (e) { showToast("可以复制地址栏链接"); } });
+      $("resetButton").addEventListener("click", () => { stopTimer(); Object.assign(state, { checks: 0, drawCount: 0, history: [], doneRituals: [], cardShift: 0, focusMinutes: 3, remaining: 180, favorite: "" }); save(); render(); showToast("今天已清空"); });
+      $("shuffleCards").addEventListener("click", () => { state.cardShift += 5; document.querySelectorAll(".flip").forEach((card) => card.classList.remove("is-open")); save(); renderCards(); showToast("已换一组卡片"); });
+      document.querySelectorAll(".flip").forEach((card) => card.addEventListener("click", () => { card.classList.toggle("is-open"); showToast(card.classList.contains("is-open") ? "卡片已翻开" : "卡片已合上"); }));
+      document.querySelectorAll(".preset").forEach((btn) => btn.addEventListener("click", () => { resetTimer(Number(btn.dataset.minutes)); showToast("已切换为 " + btn.dataset.minutes + " 分钟"); }));
+      $("timerButton").addEventListener("click", () => {
+        if (timer) { stopTimer(); $("timerButton").textContent = "继续"; showToast("已暂停"); return; }
+        $("timerButton").textContent = "暂停";
+        timer = setInterval(() => {
+          state.remaining -= 1;
+          if (state.remaining <= 0) { state.remaining = state.focusMinutes * 60; stopTimer(); $("timerButton").textContent = "再来一次"; complete(state.focusMinutes + " 分钟专注"); }
+          save(); renderTimer();
+        }, 1000);
+        showToast("专注开始");
+      });
+      $("timerReset").addEventListener("click", () => { resetTimer(); showToast("计时已重置"); });
+      $("breathButton").addEventListener("click", () => { document.body.classList.toggle("paused-breath"); $("breathButton").textContent = document.body.classList.contains("paused-breath") ? "继续呼吸" : "暂停呼吸"; showToast(document.body.classList.contains("paused-breath") ? "呼吸已暂停" : "呼吸继续"); });
+      $("breathSpeed").addEventListener("click", () => { state.breathSpeedIndex = (state.breathSpeedIndex + 1) % breathSpeeds.length; save(); render(); showToast("呼吸节奏已切换"); });
+      $("refreshRituals").addEventListener("click", () => { state.drawCount += 1; save(); renderRituals(); showToast("小任务已刷新"); });
+      $("saveNote").addEventListener("click", () => { const text = $("noteInput").value.trim(); if (!text) { showToast("先写一句再保存"); return; } addHistory(text, "记录"); $("noteInput").value = ""; save(); renderHistory(); showToast("已存入记录"); });
+      $("clearLog").addEventListener("click", () => { state.history = []; save(); renderHistory(); showToast("记录已清空"); });
+
+      render();
+      if (!state.history.length) drawTask();
     </script>
   </body>
 </html>
