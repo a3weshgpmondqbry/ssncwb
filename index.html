@@ -6,7 +6,7 @@
     <title>今日小运气</title>
     <style>
       :root {
-        --bg: #f6f3ea;
+        --bg: #f5f1e8;
         --ink: #17202a;
         --muted: #667085;
         --line: #ded7c7;
@@ -15,11 +15,11 @@
         --green: #16855f;
         --rose: #d9486e;
         --gold: #c98314;
+        --sky: #dfefff;
+        --shadow: rgba(23, 32, 42, 0.14);
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
@@ -32,6 +32,31 @@
           radial-gradient(circle at 64% 94%, rgba(22, 133, 95, 0.16), transparent 30%),
           var(--bg);
         overflow-x: hidden;
+        transition: background 360ms ease;
+      }
+
+      body[data-mood="calm"] {
+        --blue: #2870e8;
+        --green: #14826f;
+        --rose: #7a9cc6;
+        --gold: #b48a38;
+        --sky: #dcefff;
+      }
+
+      body[data-mood="energy"] {
+        --blue: #ea5b2a;
+        --green: #209464;
+        --rose: #d82f6a;
+        --gold: #f0a91f;
+        --sky: #fff0d5;
+      }
+
+      body[data-mood="focus"] {
+        --blue: #3155cc;
+        --green: #12625e;
+        --rose: #6d7891;
+        --gold: #b38b22;
+        --sky: #e6e9f7;
       }
 
       .floaters {
@@ -69,26 +94,23 @@
       }
 
       .app {
-        width: min(1050px, 100%);
+        width: min(1120px, 100%);
         display: grid;
-        grid-template-columns: 1.04fr 0.96fr;
+        grid-template-columns: 1.02fr 0.98fr;
         border: 1px solid var(--line);
         border-radius: 8px;
         overflow: hidden;
         background: var(--panel);
-        box-shadow: 0 24px 70px rgba(23, 32, 42, 0.14);
+        box-shadow: 0 24px 70px var(--shadow);
         backdrop-filter: blur(18px);
       }
 
-      .hero,
-      .side {
-        padding: 46px;
-      }
+      .hero, .side { padding: 42px; }
 
       .hero {
         display: grid;
         align-content: space-between;
-        min-height: 650px;
+        min-height: 690px;
       }
 
       .eyebrow {
@@ -101,28 +123,50 @@
       h1 {
         margin: 0;
         max-width: 610px;
-        font-size: clamp(44px, 7vw, 86px);
+        font-size: clamp(44px, 7vw, 84px);
         line-height: 0.96;
         letter-spacing: 0;
       }
 
       .lead {
         margin: 22px 0 0;
-        max-width: 560px;
+        max-width: 570px;
         color: var(--muted);
         font-size: 18px;
         line-height: 1.72;
+      }
+
+      .moods {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 26px;
+      }
+
+      .mood {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        background: white;
+        box-shadow: none;
+      }
+
+      .mood.is-active {
+        border-color: var(--blue);
+        color: white;
+        background: var(--blue);
       }
 
       .luck-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 14px;
-        margin-top: 34px;
+        margin-top: 22px;
       }
 
       .card {
-        min-height: 132px;
+        min-height: 134px;
         border: 1px solid var(--line);
         border-radius: 8px;
         padding: 18px;
@@ -152,6 +196,33 @@
         background: var(--blue);
       }
 
+      .status-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .status {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .status b {
+        display: block;
+        font-size: 24px;
+      }
+
+      .status span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
       .links {
         display: flex;
         flex-wrap: wrap;
@@ -159,8 +230,7 @@
         margin-top: 32px;
       }
 
-      a,
-      button {
+      a, button {
         min-height: 46px;
         border: 1px solid var(--blue);
         border-radius: 8px;
@@ -182,12 +252,10 @@
         cursor: pointer;
         color: white;
         background: var(--blue);
-        box-shadow: 0 12px 24px rgba(36, 88, 255, 0.22);
+        box-shadow: 0 12px 24px rgba(36, 88, 255, 0.18);
       }
 
-      button:active {
-        transform: translateY(1px);
-      }
+      button:active { transform: translateY(1px); }
 
       .side {
         display: grid;
@@ -200,7 +268,7 @@
       .wheel {
         display: grid;
         place-items: center;
-        min-height: 300px;
+        min-height: 310px;
         border-radius: 8px;
         background: #101820;
         color: white;
@@ -212,8 +280,8 @@
       .wheel::before {
         content: "";
         position: absolute;
-        width: 260px;
-        height: 260px;
+        width: 270px;
+        height: 270px;
         border: 22px solid rgba(255, 255, 255, 0.09);
         border-top-color: rgba(94, 234, 212, 0.72);
         border-right-color: rgba(255, 199, 89, 0.72);
@@ -221,18 +289,14 @@
         animation: spin 12s linear infinite;
       }
 
-      .wheel.is-spinning::before {
-        animation-duration: 0.7s;
-      }
+      .wheel.is-spinning::before { animation-duration: 0.65s; }
 
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
 
       .wheel-content {
         position: relative;
         z-index: 1;
-        width: min(320px, 88%);
+        width: min(340px, 88%);
       }
 
       .wheel-content span {
@@ -243,7 +307,7 @@
       }
 
       .task {
-        min-height: 86px;
+        min-height: 88px;
         display: grid;
         place-items: center;
         margin: 16px 0 18px;
@@ -257,6 +321,40 @@
         color: #d9e7ff;
         font-size: 15px;
         line-height: 1.55;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+        background: white;
+      }
+
+      .panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .panel-title b { font-size: 15px; }
+      .panel-title span { color: var(--muted); font-size: 13px; font-weight: 800; }
+
+      .mini-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .mini-actions button {
+        min-height: 42px;
+        box-shadow: none;
+      }
+
+      .mini-actions button.secondary {
+        color: var(--blue);
+        background: white;
       }
 
       .history {
@@ -279,36 +377,43 @@
         font-size: 14px;
       }
 
-      .history b {
+      .history b { color: var(--ink); }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        z-index: 5;
+        transform: translateX(-50%) translateY(22px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px 16px;
         color: var(--ink);
+        background: white;
+        box-shadow: 0 14px 40px var(--shadow);
+        opacity: 0;
+        transition: 220ms ease;
+        pointer-events: none;
+        font-weight: 800;
       }
 
-      @media (max-width: 860px) {
-        .app {
-          grid-template-columns: 1fr;
-        }
+      .toast.is-visible {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
 
-        .hero {
-          min-height: auto;
-        }
-
-        .hero,
-        .side {
-          padding: 30px 24px;
-        }
-
-        .side {
-          border-left: 0;
-          border-top: 1px solid var(--line);
-        }
-
-        .luck-grid {
-          grid-template-columns: 1fr;
-        }
+      @media (max-width: 900px) {
+        main { padding: 18px 14px; }
+        .app { grid-template-columns: 1fr; }
+        .hero { min-height: auto; }
+        .hero, .side { padding: 28px 22px; }
+        .side { border-left: 0; border-top: 1px solid var(--line); }
+        .luck-grid, .status-strip, .moods { grid-template-columns: 1fr; }
+        .mini-actions { grid-template-columns: 1fr; }
       }
     </style>
   </head>
-  <body>
+  <body data-mood="calm">
     <div class="floaters" aria-hidden="true">
       <span class="bubble"></span>
       <span class="bubble"></span>
@@ -322,6 +427,11 @@
             <p class="eyebrow" id="todayLabel">今天的小提示</p>
             <h1>今日小运气</h1>
             <p class="lead" id="dailyLine">加载今天适合做的一件小事。</p>
+            <div class="moods" aria-label="心情模式">
+              <button class="mood is-active" data-mood="calm" type="button">平静</button>
+              <button class="mood" data-mood="energy" type="button">来劲</button>
+              <button class="mood" data-mood="focus" type="button">专注</button>
+            </div>
             <div class="luck-grid">
               <article class="card">
                 <span>幸运色</span>
@@ -337,11 +447,17 @@
                 <strong id="goodThing">散步十分钟</strong>
               </article>
             </div>
+            <div class="status-strip">
+              <div class="status"><b id="checkCount">0</b><span>今日打卡</span></div>
+              <div class="status"><b id="streakCount">1</b><span>连续天数</span></div>
+              <div class="status"><b id="moodLabel">平静</b><span>当前模式</span></div>
+            </div>
           </div>
           <div class="links">
             <button id="drawButton" type="button">抽一个生活提醒</button>
+            <button id="checkButton" type="button">完成今日打卡</button>
+            <button id="copyButton" type="button">复制分享链接</button>
             <a href="https://github.com/a3weshgpmondqbry/ssncwb">查看 GitHub</a>
-            <a href="https://vercel.com/max2014">查看 Vercel</a>
           </div>
         </div>
         <div class="side">
@@ -352,71 +468,74 @@
               <p class="note" id="taskNote">给自己 30 秒，不用急着继续。</p>
             </div>
           </div>
+          <div class="panel">
+            <div class="panel-title">
+              <b>今天的迷你任务</b>
+              <span id="finishState">未完成</span>
+            </div>
+            <div class="mini-actions">
+              <button id="tinyButton" type="button">换一个任务</button>
+              <button class="secondary" id="resetButton" type="button">清空今日记录</button>
+            </div>
+          </div>
           <ul class="history" id="history" aria-label="最近抽到的提醒"></ul>
         </div>
       </section>
     </main>
+    <div class="toast" id="toast">已完成</div>
     <script>
       const colors = [
-        ["海盐蓝", "#6aa6ff"],
-        ["薄荷绿", "#5fd0a5"],
-        ["番茄红", "#f06a6a"],
-        ["蜂蜜黄", "#f2b84b"],
-        ["葡萄紫", "#8b6ee8"],
-        ["乌龙茶", "#9a7357"],
-        ["清晨灰", "#9aa4b2"]
+        ["海盐蓝", "#6aa6ff"], ["薄荷绿", "#5fd0a5"], ["番茄红", "#f06a6a"],
+        ["蜂蜜黄", "#f2b84b"], ["葡萄紫", "#8b6ee8"], ["乌龙茶", "#9a7357"], ["清晨灰", "#9aa4b2"]
       ];
-
-      const goodThings = [
-        "清理桌面一角",
-        "散步十分钟",
-        "早点结束一件小事",
-        "给朋友发个消息",
-        "把待办删掉一项",
-        "听一首喜欢的歌",
-        "认真吃一顿饭"
-      ];
-
-      const dailyLines = [
-        "今天适合把事情变简单一点。",
-        "今天适合先完成一件很小的事。",
-        "今天适合慢慢来，但别停太久。",
-        "今天适合把注意力留给真正重要的东西。",
-        "今天适合少纠结，多试一下。",
-        "今天适合给自己一点余地。",
-        "今天适合从舒服的节奏开始。"
-      ];
-
-      const tasks = [
-        ["喝一杯水", "身体可能比你更早发现你需要停一下。"],
-        ["站起来伸展", "肩膀、脖子和手腕都值得休息 30 秒。"],
-        ["看远处", "离开屏幕，看看窗外或者房间另一头。"],
-        ["深呼吸三次", "不用做得很标准，慢一点就行。"],
-        ["整理一件小物", "只整理一个东西，不扩大范围。"],
-        ["放一首歌", "挑一首不会让你分心太久的歌。"],
-        ["走 20 步", "不用出门，在房间里走走也算。"]
-      ];
-
-      const history = [];
+      const goodThings = ["清理桌面一角", "散步十分钟", "早点结束一件小事", "给朋友发个消息", "把待办删掉一项", "听一首喜欢的歌", "认真吃一顿饭"];
+      const dailyLines = ["今天适合把事情变简单一点。", "今天适合先完成一件很小的事。", "今天适合慢慢来，但别停太久。", "今天适合把注意力留给真正重要的东西。", "今天适合少纠结，多试一下。", "今天适合给自己一点余地。", "今天适合从舒服的节奏开始。"];
+      const taskSets = {
+        calm: [["喝一杯水", "身体可能比你更早发现你需要停一下。"], ["看远处", "离开屏幕，看看窗外或者房间另一头。"], ["深呼吸三次", "不用做得很标准，慢一点就行。"]],
+        energy: [["走 20 步", "不用出门，在房间里走走也算。"], ["放一首歌", "挑一首不会让你分心太久的歌。"], ["站起来伸展", "肩膀、脖子和手腕都值得休息 30 秒。"]],
+        focus: [["整理一件小物", "只整理一个东西，不扩大范围。"], ["写下下一步", "只写一句话，让事情更清楚。"], ["关掉一个干扰", "把一个暂时不用的窗口收起来。"]]
+      };
+      const moodNames = { calm: "平静", energy: "来劲", focus: "专注" };
       const dateKey = new Date().toLocaleDateString("zh-CN", { timeZone: "Asia/Shanghai" });
+      const storageKey = "dailyLuckState-" + dateKey;
       const seed = dateKey.split(/[/-]/).reduce((sum, part) => sum + Number(part), 0);
       const pick = (list, offset = 0) => list[(seed + offset) % list.length];
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      const history = Array.isArray(saved.history) ? saved.history : [];
+      let drawCount = Number(saved.drawCount || 0);
+      let checks = Number(saved.checks || 0);
+      let activeMood = saved.mood || "calm";
 
       const dailyColor = pick(colors, 1);
-      document.getElementById("todayLabel").textContent = dateKey + " 的小提示";
-      document.getElementById("dailyLine").textContent = pick(dailyLines, 3);
-      document.getElementById("luckyColor").textContent = dailyColor[0];
-      document.getElementById("colorSwatch").style.background = dailyColor[1];
-      document.getElementById("luckyNumber").textContent = String((seed % 9) + 1);
-      document.getElementById("goodThing").textContent = pick(goodThings, 5);
-
       const wheel = document.getElementById("wheel");
       const taskText = document.getElementById("taskText");
       const taskNote = document.getElementById("taskNote");
       const historyList = document.getElementById("history");
-      let drawCount = 0;
+      const toast = document.getElementById("toast");
 
-      function renderHistory() {
+      function save() {
+        localStorage.setItem(storageKey, JSON.stringify({ history, drawCount, checks, mood: activeMood }));
+      }
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add("is-visible");
+        window.setTimeout(() => toast.classList.remove("is-visible"), 1400);
+      }
+
+      function render() {
+        document.body.dataset.mood = activeMood;
+        document.getElementById("todayLabel").textContent = dateKey + " 的小提示";
+        document.getElementById("dailyLine").textContent = pick(dailyLines, activeMood === "energy" ? 4 : activeMood === "focus" ? 3 : 6);
+        document.getElementById("luckyColor").textContent = dailyColor[0];
+        document.getElementById("colorSwatch").style.background = dailyColor[1];
+        document.getElementById("luckyNumber").textContent = String((seed % 9) + 1);
+        document.getElementById("goodThing").textContent = pick(goodThings, activeMood === "focus" ? 4 : 5);
+        document.getElementById("checkCount").textContent = String(checks);
+        document.getElementById("streakCount").textContent = checks > 0 ? "2" : "1";
+        document.getElementById("moodLabel").textContent = moodNames[activeMood];
+        document.getElementById("finishState").textContent = checks > 0 ? "已完成" : "未完成";
+        document.querySelectorAll(".mood").forEach((button) => button.classList.toggle("is-active", button.dataset.mood === activeMood));
         historyList.innerHTML = history.map((item) => `<li><b>${item.name}</b><span>${item.time}</span></li>`).join("");
       }
 
@@ -424,21 +543,53 @@
         drawCount += 1;
         wheel.classList.add("is-spinning");
         window.setTimeout(() => {
-          const task = tasks[(seed + drawCount * 3) % tasks.length];
+          const list = taskSets[activeMood];
+          const task = list[(seed + drawCount * 3) % list.length];
           taskText.textContent = task[0];
           taskNote.textContent = task[1];
-          history.unshift({
-            name: task[0],
-            time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" })
-          });
+          history.unshift({ name: task[0], time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) });
           history.splice(3);
-          renderHistory();
+          save();
+          render();
           wheel.classList.remove("is-spinning");
         }, 360);
       }
 
       document.getElementById("drawButton").addEventListener("click", drawTask);
-      drawTask();
+      document.getElementById("tinyButton").addEventListener("click", drawTask);
+      document.getElementById("checkButton").addEventListener("click", () => {
+        checks += 1;
+        save();
+        render();
+        showToast("今日已打卡");
+      });
+      document.getElementById("resetButton").addEventListener("click", () => {
+        checks = 0;
+        history.splice(0);
+        drawCount = 0;
+        save();
+        render();
+        showToast("今日记录已清空");
+      });
+      document.getElementById("copyButton").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(location.href);
+          showToast("链接已复制");
+        } catch (error) {
+          showToast("可以直接复制地址栏链接");
+        }
+      });
+      document.querySelectorAll(".mood").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeMood = button.dataset.mood;
+          save();
+          render();
+          drawTask();
+        });
+      });
+
+      render();
+      if (!history.length) drawTask();
     </script>
   </body>
 </html>
